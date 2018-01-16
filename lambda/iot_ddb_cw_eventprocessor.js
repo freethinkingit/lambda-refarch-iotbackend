@@ -76,13 +76,15 @@ function handleEvent(event, context) {
                 }
             });
 
-        cwParams.MetricData.push(
-            {
-                MetricName: 'SensorData',
-                Dimensions: [{ Name: 'SensorId', Value: sensorEvent.sensorid }],
-                Timestamp: new Date(sensorEvent.timestamp),
-                Value: sensorEvent.value
-            });
+        if (!isNaN(parseInt(sensorEvent.sensorid))) {
+            cwParams.MetricData.push(
+                {
+                    MetricName: 'SensorData',
+                    Dimensions: [{ Name: 'SensorId', Value: sensorEvent.sensorid }],
+                    Timestamp: new Date(sensorEvent.timestamp),
+                    Value: sensorEvent.value
+                });
+        }    
     });
 
     ddbParams.RequestItems[config.SensorDataTable] = putItems;
